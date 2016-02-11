@@ -1396,14 +1396,14 @@ disk_write(target_session_t *sess, iscsi_scsi_cmd_args_t *args, uint8_t lun,
 		" bytes from socket into device at byte offset %" PRIu64 "\n",
 		bytec, byte_offset);
 
-	if ((unsigned) bytec > MB(1)) {
+	if ((unsigned) bytec > MB(3)) {
 		iscsi_err(__FILE__, __LINE__, "bytec > %u\n", bytec);
 		NO_CLEANUP;
 		return -1;
 	}
 
 	/* Assign ptr for write data */
-	ptr = malloc(MB(1));
+	ptr = malloc(MB(3));
 
 	/* Have target do data transfer */
 	sg.iov_base = ptr;
@@ -1479,12 +1479,12 @@ disk_read(target_session_t *sess, iscsi_scsi_cmd_args_t *args, uint32_t lba,
 			disks.v[sess->d].blockc - 1, lba, len);
 		return -1;
 	}
-	if ((unsigned) bytec > MB(1)) {
+	if ((unsigned) bytec > MB(3)) {
 		iscsi_err(__FILE__, __LINE__, "bytec > %u\n", bytec);
 		NO_CLEANUP;
 		return -1;
 	}
-	ptr = malloc(MB(1));
+	ptr = malloc(MB(3));
 	n = 0;
 	do {
 		if (de_lseek(&disks.v[sess->d].lunv->v[lun].de,
